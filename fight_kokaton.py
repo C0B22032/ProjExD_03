@@ -42,9 +42,6 @@ class Bird:
         引数1 num：こうかとん画像ファイル名の番号
         引数2 xy：こうかとん画像の位置座標タプル
         """
- 
-
-
         img0=pg.transform.rotozoom(pg.image.load(f"ex03/fig/{num}.png"), 0, 2.0)#left
         img1=pg.transform.flip(img0,True,False)#right
         self._imgs = {(+1,0):img1,
@@ -59,10 +56,7 @@ class Bird:
         self._img=self._imgs[(+1,0)]
         self._rct =self._img.get_rect()
         self._rct.center = xy
-
-        
-        
-
+    
     def change_img(self, num: int, screen: pg.Surface):
         """
         こうかとん画像を切り替え，画面に転送する
@@ -91,13 +85,22 @@ class Bird:
         if not( sum_mv[0]==0 and sum_mv[1]==0):            
             self._img = self._imgs[tuple(sum_mv)]
         screen.blit(self._img, self._rct)
+    
+    def get_direction():
+        x=
+        y=
+
+
+
+
+        return (x,y)
 
 
 class Bomb:
     """
     爆弾に関するクラス
     """
-    _colors = [(255,0,0),(0,255,0),(0,0,0)]
+    _colors = [(255,0,0),(0,255,0),(0,0,255)]
     _dires = [-1,0,+1]
     def __init__(self):
         """
@@ -131,10 +134,11 @@ class Beam:
     ビームに関するクラス
     """
     def __init__(self,bird:Bird):
+        (x,y)=Bird.get_direction()
         self._img =pg.transform.rotozoom(pg.image.load(f"ex03/fig/beam.png"),0,2.0)#画像surface
         self._rct = self._img.get_rect()
-        self._rct.centerx = bird._rct.centerx + bird._rct.width/2
-        self._rct.centery = bird._rct.centery
+        self._rct.centerx = bird._rct.centerx + x*bird._rct.width/2
+        self._rct.centery = bird._rct.centery + y*bird._rct.height/2
         self._vx,self._vy = +1,0
 
     def update(self, screen: pg.Surface):
@@ -145,6 +149,7 @@ class Beam:
 
         self._rct.move_ip(self._vx, 0)
         screen.blit(self._img, self._rct)
+    
 
 
         
