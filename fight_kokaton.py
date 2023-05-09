@@ -42,15 +42,26 @@ class Bird:
         引数2 xy：こうかとん画像の位置座標タプル
         """
         self._img = pg.transform.flip(  # 左右反転
-            pg.transform.rotozoom(  # 2倍に拡大
-                pg.image.load(f"ex03/fig/{num}.png"), 
-                0, 
-                2.0), 
-            True, 
-            False
-        )
+            pg.transform.rotozoom(pg.image.load(f"ex03/fig/{num}.png"), 0, 2.0), True, False)
         self._rct = self._img.get_rect()
         self._rct.center = xy
+
+        img0=pg.transform.rotozoom(pg.image.load(f"ex03/fig/{num}.png"), 0, 2.0)#left
+        img1=pg.transform.flip(img0,True,False)#right
+        self._imgs = {(+1,0):img1,
+                      (+1,-1):pg.transform.rotozoom(img1,45,1.0),
+                      (0,-1):pg.transform.rotozoom(img1,90,1.0),
+                      (-1,-1):pg.transform.rotozoom(img0,-45,1.0),
+                      (-1,0):img0,
+                      (-1,+1):pg.transform.rotozoom(img0,45,1.0),
+                      (0,+1):pg.transform.rotozoom(img1,-90,1.0),
+                      (+1,+1):pg.transform.rotozoom(img1,-45,1.0),}
+        
+        self._img=self.imgs[(+1,0)]
+        self._rct =self._img.get_rect()
+
+        
+        
 
     def change_img(self, num: int, screen: pg.Surface):
         """
@@ -67,13 +78,18 @@ class Bird:
         引数1 key_lst：押下キーの真理値リスト
         引数2 screen：画面Surface
         """
+        sum_mv=[0,0]
         for k, mv in __class__._delta.items():
             if key_lst[k]:
                 self._rct.move_ip(mv)
+                sum_mv[0] +=mv[0] #横の合計（向き）
+                sum_mv[1] +=mv[1]#縦の（ｒｙ
         if check_bound(screen.get_rect(), self._rct) != (True, True):
             for k, mv in __class__._delta.items():
                 if key_lst[k]:
                     self._rct.move_ip(-mv[0], -mv[1])
+        if not( sum_mv[0]==0 and sum_mv[1]==0):            
+            self._img = self._imgs[tuple(sum_mv)]
         screen.blit(self._img, self._rct)
 
 
