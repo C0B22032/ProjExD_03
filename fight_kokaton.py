@@ -113,7 +113,7 @@ class Beam:
     ビームに関するクラス
     """
     def __init__(self,bird:Bird):
-        self._img =pg.image.load(f"ex03/fig/beam.png")#画像surface
+        self._img =pg.transform.rotozoom(pg.image.load(f"ex03/fig/beam.png"),0,2.0)#画像surface
         self._rct = self._img.get_rect()
         self._rct.centerx = bird._rct.centerx + bird._rct.width/2
         self._rct.centery = bird._rct.centery
@@ -174,6 +174,9 @@ def main():
                 #ビームが爆弾と接触したとき、対消滅する
                 beam=None
                 bomb=None
+                bird.change_img(6, screen)
+                time.sleep(1)
+                return
 
  
 
