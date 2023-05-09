@@ -41,10 +41,8 @@ class Bird:
         引数1 num：こうかとん画像ファイル名の番号
         引数2 xy：こうかとん画像の位置座標タプル
         """
-        self._img = pg.transform.flip(  # 左右反転
-            pg.transform.rotozoom(pg.image.load(f"ex03/fig/{num}.png"), 0, 2.0), True, False)
-        self._rct = self._img.get_rect()
-        self._rct.center = xy
+ 
+
 
         img0=pg.transform.rotozoom(pg.image.load(f"ex03/fig/{num}.png"), 0, 2.0)#left
         img1=pg.transform.flip(img0,True,False)#right
@@ -57,8 +55,9 @@ class Bird:
                       (0,+1):pg.transform.rotozoom(img1,-90,1.0),
                       (+1,+1):pg.transform.rotozoom(img1,-45,1.0),}
         
-        self._img=self.imgs[(+1,0)]
+        self._img=self._imgs[(+1,0)]
         self._rct =self._img.get_rect()
+        self._rct.center = xy
 
         
         
