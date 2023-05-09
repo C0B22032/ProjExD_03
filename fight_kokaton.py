@@ -169,11 +169,13 @@ def main():
             bomb.update(screen)
         if beam is not None:
             beam.update(screen)
-
-            if bomb is not None and beam._rct.collidedict(bomb._rct):
+            if Bomb is not None and beam._rct.colliderect(bomb._rct):
+                
                 #ビームが爆弾と接触したとき、対消滅する
                 beam=None
                 bomb=None
+
+ 
 
         pg.display.update()
         clock.tick(1000)
