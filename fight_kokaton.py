@@ -8,6 +8,7 @@ import pygame as pg
 WIDTH = 1600  # ゲームウィンドウの幅
 HEIGHT = 900  # ゲームウィンドウの高さ
 NUM_OF_BOMBS = 5
+SHOOT_BEAM =3
 
 
 def check_bound(area: pg.Rect, obj: pg.Rect) -> tuple[bool, bool]:
@@ -97,7 +98,7 @@ class Bomb:
     """
     爆弾に関するクラス
     """
-    _colors = [(255,0,0),(0,255,0),(0,0,0)]
+    _colors = [(255,0,0),(0,255,0),(0,0,255)]
     _dires = [-1,0,+1]
     def __init__(self):
         """
@@ -137,11 +138,18 @@ class Beam:
         self._rct.centery = bird._rct.centery
         self._vx,self._vy = +1,0
 
+
+
     def update(self, screen: pg.Surface):
         """
         ビームを速度ベクトルself._vxに基づき移動させる
         引数 screen：画面Surface
         """
+        yoko, tate = check_bound(screen.get_rect(), self._rct)
+        if not yoko:
+            self._vx *= -1
+        if not tate:
+            self._vy *= -1
 
         self._rct.move_ip(self._vx, 0)
         screen.blit(self._img, self._rct)
@@ -166,8 +174,9 @@ def main():
             if event.type == pg.QUIT:
                 return
             if event.type == pg.KEYDOWN and event.key == pg.K_SPACE:
-                beam = Beam(bird)
+                beam=Beam(bird)
 
+                    
         tmr += 1
         screen.blit(bg_img, [0, 0])
 
@@ -187,18 +196,21 @@ def main():
         if beam is not None:
             beam.update(screen)
             for i,bomb in enumerate(bombs):
+                
                 if beam._rct.colliderect(bomb._rct):
                 
                      #ビームが爆弾と接触したとき、対消滅する
                      beam=None
                      del bombs[i]
                      bird.change_img(6, screen)
+                     
+                     time.sleep(1)
                      break
 
  
 
         pg.display.update()
-        clock.tick(100)
+        clock.tick(500)
 
 
 if __name__ == "__main__":
