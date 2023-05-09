@@ -42,8 +42,6 @@ class Bird:
         引数1 num：こうかとん画像ファイル名の番号
         引数2 xy：こうかとん画像の位置座標タプル
         """
- 
-
 
         img0=pg.transform.rotozoom(pg.image.load(f"ex03/fig/{num}.png"), 0, 2.0)#left
         img1=pg.transform.flip(img0,True,False)#right
@@ -59,9 +57,6 @@ class Bird:
         self._img=self._imgs[(+1,0)]
         self._rct =self._img.get_rect()
         self._rct.center = xy
-
-        
-        
 
     def change_img(self, num: int, screen: pg.Surface):
         """
@@ -97,7 +92,7 @@ class Bomb:
     """
     爆弾に関するクラス
     """
-    _colors = [(255,0,0),(0,255,0),(0,0,0)]
+    _colors = [(255,0,0),(0,255,0),(0,0,255)]
     _dires = [-1,0,+1]
     def __init__(self):
         """
@@ -147,8 +142,6 @@ class Beam:
         screen.blit(self._img, self._rct)
 
 
-        
-
 def main():
     pg.display.set_caption("たたかえ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
@@ -161,7 +154,6 @@ def main():
 
     tmr = 0
     while True:
-        
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 return
@@ -180,10 +172,8 @@ def main():
                 time.sleep(1)
                 return
 
-
         key_lst = pg.key.get_pressed()
         bird.update(key_lst, screen)
-
         if beam is not None:
             beam.update(screen)
             for i,bomb in enumerate(bombs):
@@ -194,8 +184,6 @@ def main():
                      del bombs[i]
                      bird.change_img(6, screen)
                      break
-
- 
 
         pg.display.update()
         clock.tick(100)
